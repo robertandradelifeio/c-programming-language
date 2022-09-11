@@ -9,11 +9,13 @@
 int main()
 {
     FILE *pFile;
+    FILE *oFile;
     int c, spaces, tabs, newLines;
     spaces = 0;
     tabs = 0;
     newLines = 0;
-    pFile = fopen("./mocks/1-8", "r");
+    pFile = fopen("./mocks/tabs-spaces-newlines", "r");
+    oFile = fopen("./out/1-8.txt", "w");
     if (pFile == NULL)
         perror("Error opening file");
     else
@@ -36,9 +38,9 @@ int main()
             //    printf("%d\n", c);
         } while (c != EOF);
     }
-    printf("Number of tabs %d\n\n", tabs);
-    printf("Number of spaces %d\n\n", spaces);
-    printf("Number of new lines %d\n\n", newLines);
+    fprintf(oFile, "Number of tabs: %d\n", tabs);
+    fprintf(oFile, "Number of spaces: %d\n", spaces);
+    fprintf(oFile, "Number of new-lines: %d", newLines);
 
     fclose(pFile);
 }

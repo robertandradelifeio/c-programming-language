@@ -1,40 +1,43 @@
+
+// C program to implement
+// the above approach
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#define IN 1
-#define OUT 0
-
-int main(void)
+// Driver code
+int main()
 {
-  char nl;
-  char nw;
-  char nc;
-
-  int state;
-
-  nl = nw = nc = 0;
-  state = OUT;
-
-  char c;
-  while ((c = getchar()) != EOF)
-  {
-    ++nc;
-
-    if (c == '\n')
+    FILE *pFile;
+    FILE *wFile;
+    int c, spaces, writeMode;
+    writeMode = 1;
+    spaces = 0;
+    pFile = fopen("./mocks/tabs-spaces-newlines", "r");
+    wFile = fopen("./out/1-11.txt", "w");
+    if (pFile == NULL)
+        perror("Error opening file");
+    else
     {
-      ++nl;
+        do
+        {
+            c = fgetc(pFile);
+            if (c == ' ')
+            {
+                if (writeMode == 1)
+                {
+                    putc(c, wFile);
+                }
+                writeMode = 0;
+            }
+            if (c != ' ')
+            {
+                writeMode = 1;
+                putc(c, wFile);
+            }
+        } while (c != EOF);
     }
-    else if (c == ' ' || c == '\n' || c == '\t')
-    {
-      state = OUT;
-    }
-    else if (state == OUT)
-    {
-      state = IN;
-      ++nw;
-    }
-  }
+    printf("Number of spaces %d\n\n", spaces);
 
-  printf("lines: %d\nwords: %d\ncharacters: %d\n", nl, nw, nc);
-
-  return 0;
+    fclose(pFile);
 }

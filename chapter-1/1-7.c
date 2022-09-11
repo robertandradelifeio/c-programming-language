@@ -2,6 +2,6 @@
 
 int main()
 {
-    printf("this is EOF: %d\n", EOF);
+    fprintf(fopen("./out/1-7.txt", "w"), "this is EOF: %d\n", EOF);
     return EOF;
 }
