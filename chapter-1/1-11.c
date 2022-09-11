@@ -1,43 +1,28 @@
-
-// C program to implement
-// the above approach
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-// Driver code
-int main()
+#define IN 1  /* inside a word */
+#define OUT 0 /* outside a word */
+/* count lines, words, and characters in input */
+void main()
 {
-    FILE *pFile;
-    FILE *wFile;
-    int c, spaces, writeMode;
-    writeMode = 1;
-    spaces = 0;
-    pFile = fopen("./mocks/tabs-spaces-newlines", "r");
-    wFile = fopen("./out/1-11.txt", "w");
-    if (pFile == NULL)
-        perror("Error opening file");
-    else
+    int c, nl, nw, nc, state;
+    FILE *IN_FILE;
+    FILE *OUT_FILE;
+    state = OUT;
+    nl = nw = nc = 0;
+    IN_FILE = fopen("./mocks/tabs-spaces-newlines", "r");
+    OUT_FILE = fopen("./out/1-11.txt", "w");
+    while ((c = fgetc(IN_FILE)) != EOF)
     {
-        do
+        ++nc;
+        if (c == '\n')
+            ++nl;
+        if (c == ' ' || c == '\n' || c == '\t')
+            state = OUT;
+        else if (state == OUT)
         {
-            c = fgetc(pFile);
-            if (c == ' ')
-            {
-                if (writeMode == 1)
-                {
-                    putc(c, wFile);
-                }
-                writeMode = 0;
-            }
-            if (c != ' ')
-            {
-                writeMode = 1;
-                putc(c, wFile);
-            }
-        } while (c != EOF);
+            state = IN;
+            ++nw;
+        }
     }
-    printf("Number of spaces %d\n\n", spaces);
-
-    fclose(pFile);
+    fprintf(OUT_FILE, "Newlines: %d\nNew words: %d\nNew characters: %d\n", nl, nw, nc);
 }

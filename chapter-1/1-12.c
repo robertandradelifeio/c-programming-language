@@ -2,28 +2,36 @@
 
 #define IN 1
 #define OUT 0
-#define TAB '\t'
-#define SPACE ' '
-#define NEWLINE '\n'
 
 int main()
 {
-  char c;
-  int state;
+  FILE *pFile;
+  FILE *wFile;
+  int c, state;
   state = OUT;
-  while((c = getchar() != EOF))
+  pFile = fopen("./mocks/tabs-spaces-newlines", "r");
+  wFile = fopen("./out/1-12.txt", "w");
+  if (pFile == NULL)
+    perror("Error opening file");
+  else
   {
-    if(c != TAB && c != SPACE && c != NEWLINE)
+    while ((c = fgetc(pFile)) != EOF)
     {
-      putchar(c);
-      state = IN;
+      if (c == ' ' || c == '\t' || c == '\n')
+      {
+        if (state == IN)
+        {
+          putc('\n', wFile);
+        }
+        state = OUT;
+      }
+      else
+      {
+        state = IN;
+        putc(c, wFile);
+      }
     }
-    else if (state == IN)
-    {
-      putchar('\n');
-      state = OUT;
-    }
-    
   }
+  fclose(pFile);
   return 0;
 }
