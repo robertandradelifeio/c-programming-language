@@ -8,52 +8,62 @@ Exercise 1-13:
 
 #define IN 1
 #define OUT 0
+#define BLANK ' '
+#define TAB '\t'
+#define NEWLINE '\n'
 
-int main()
+FILE *pFile;
+FILE *wFile;
+
+int getTotalWords(FILE *pFile)
 {
-  FILE *pFile;
-  FILE *wFile;
   int c, state, totalWords;
   totalWords = 0;
   state = OUT;
+
+  while ((c = fgetc(pFile)) != EOF)
+  {
+    if (c == BLANK || c == TAB || c == NEWLINE)
+    {
+      if (state == IN)
+      {
+        totalWords++;
+      }
+      state = OUT;
+    }
+    else
+    {
+      state = IN;
+    }
+  }
+  return totalWords;
+}
+
+int main()
+{
   pFile = fopen("./mocks/tabs-spaces-newlines", "r");
   wFile = fopen("./out/1-13.txt", "w");
+  int totalWords;
   if (pFile == NULL)
     perror("Error opening file");
   else
   {
-
-    while ((c = fgetc(pFile)) != EOF)
-    {
-      if (c == ' ' || c == '\t' || c == '\n')
-      {
-        if (state == IN)
-        {
-          totalWords++;
-          // putc('\n', wFile);
-        }
-        state = OUT;
-      }
-      else
-      {
-        state = IN;
-        // putc(c, wFile);
-      }
-    }
-
+    totalWords = getTotalWords(pFile);
     fprintf(wFile, "\nTotal words in file:%d\n", totalWords);
 
-      int wordLengths[totalWords];
-      int currentWordLength;
-      int currentWord;
-      currentWord = currentWordLength = 0;
-      pFile = fopen("./mocks/tabs-spaces-newlines", "r");
-      c = 0;
+    int wordLengths[totalWords];
+    int currentWordLength;
+    int currentWord;
+    int c;
+    currentWord = currentWordLength = 0;
+    rewind(pFile);
+    c = 0;
     while ((c = fgetc(pFile)) != EOF)
     {
-      if (c == ' ' || c == '\t' || c == '\n')
+      if (c == BLANK || c == TAB || c == NEWLINE)
       {
-        if(currentWordLength > 0) {
+        if (currentWordLength > 0)
+        {
           currentWord++;
         }
         currentWordLength = 0;
@@ -72,9 +82,8 @@ int main()
       {
         fprintf(wFile, "*");
       }
-        fprintf(wFile, "\n");
+      fprintf(wFile, "\n");
     }
-    
   }
 
   fclose(pFile);
