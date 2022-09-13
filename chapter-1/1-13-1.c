@@ -2,7 +2,8 @@
 /*
 Exercise 1-13:
   Write a program to print a histogram of the lengths of words in its input.
-  It is easy to draw the histogram with the bars horizontal; a vertical orientation is more challenging.
+  It is easy to draw the histogram with the bars horizontal;
+  a vertical orientation is more challenging.
 */
 #include <stdio.h>
 
@@ -43,19 +44,19 @@ int main()
 {
   pFile = fopen("./mocks/tabs-spaces-newlines", "r");
   wFile = fopen("./out/1-13-1.txt", "w");
-  int totalWords;
   if (pFile == NULL)
     perror("Error opening file");
   else
   {
-    totalWords = getTotalWords(pFile);
-    fprintf(wFile, "\nTotal words in file:%d\n", totalWords);
 
+    int totalWords;
     int wordLengths[totalWords];
+    int longestWord;
     int currentWordLength;
     int currentWord;
     int c;
-    currentWord = currentWordLength = 0;
+    currentWord = currentWordLength = longestWord = 0;
+    totalWords = getTotalWords(pFile);
     rewind(pFile);
     c = 0;
     while ((c = fgetc(pFile)) != EOF)
@@ -71,19 +72,34 @@ int main()
       else
       {
         currentWordLength = currentWordLength + 1;
+        if (currentWordLength > longestWord)
+        {
+          longestWord = currentWordLength;
+        }
         wordLengths[currentWord] = currentWordLength;
       }
     }
 
-    for (int i = 0; i <= totalWords; i++)
+    for (int i = longestWord; i >= 0; i--)
     {
-      fprintf(wFile, "Length of word %2d: %3d|\t", i + 1, wordLengths[i]);
-      for (int j = 0; j < wordLengths[i]; j++)
+      for (int j = 0; j <= totalWords; j++)
       {
-        fprintf(wFile, "*");
+        if (i == 0)
+        {
+          fprintf(wFile, " %3d ", j + 1);
+        }
+        else if (wordLengths[j] >= i)
+        {
+          fprintf(wFile, "   * ", wordLengths[j]);
+        }
+        else
+        {
+          fprintf(wFile, "     ");
+        }
       }
       fprintf(wFile, "\n");
     }
+    fprintf(wFile, "\nTotal words in file:  %3d", totalWords + 1);
   }
   fclose(pFile);
   return 0;
