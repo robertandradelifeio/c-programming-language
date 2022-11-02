@@ -28,7 +28,8 @@
 		"vscode": {
 			"extensions": [
 				"ms-vscode.cpptools-extension-pack",
-				"sleistner.vscode-fileutils"
+				"sleistner.vscode-fileutils",
+				"donjayamanne.githistory"
 			]
 		}
 	}
