@@ -16,7 +16,7 @@ Exercise 1-13:
 FILE *pFile;
 FILE *wFile;
 
-int getTotalWords(FILE *pFile)
+int getTotalCharacters(FILE *pFile)
 {
   int c, state, totalWords;
   totalWords = 0;
@@ -56,7 +56,7 @@ int main()
     int currentWord;
     int c;
     currentWord = currentWordLength = longestWord = 0;
-    totalWords = getTotalWords(pFile);
+    totalWords = getTotalCharacters(pFile);
     rewind(pFile);
     c = 0;
     while ((c = fgetc(pFile)) != EOF)

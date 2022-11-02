@@ -15,7 +15,7 @@ Exercise 1-13:
 FILE *pFile;
 FILE *wFile;
 
-int getTotalWords(FILE *pFile)
+int getTotalCharacters(FILE *pFile)
 {
   int c, state, totalWords;
   totalWords = 0;
@@ -48,7 +48,7 @@ int main()
     perror("Error opening file");
   else
   {
-    totalWords = getTotalWords(pFile);
+    totalWords = getTotalCharacters(pFile);
     fprintf(wFile, "\nTotal words in file:%d\n", totalWords);
 
     int wordLengths[totalWords];
